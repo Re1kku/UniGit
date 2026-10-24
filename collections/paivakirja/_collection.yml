@@ -1,0 +1,28 @@
+name: Päiväkirja
+icon: text.book.closed
+color: purple
+group: Elämä
+view: timeline
+id: datetime
+title: otsikko
+subtitle: [mieliala]
+date_field: aika
+sort: -aika
+body_label: Merkintä
+
+fields:
+  - key: aika
+    type: datetime
+    label: Aika
+    required: true
+  - key: otsikko
+    type: text
+    label: Otsikko
+  - key: mieliala
+    type: rating
+    label: Mieliala
+  - key: tagit
+    type: select
+    multiple: true
+    label: Tagit
+    options: [työ, perhe, harrastus, matka]

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "config.schema.json",
+  "title": "Repon asetukset (config.yml)",
+  "type": "object",
+  "required": ["schema_version", "name"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1, "description": "Tietorakenteen versio. Sovellus tekee tämän perusteella migraatiot." },
+    "name": { "type": "string", "minLength": 1 },
+    "groups": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  }
+}

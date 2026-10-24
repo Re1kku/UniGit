@@ -1,0 +1,34 @@
+name: Treenit
+icon: figure.run
+color: green
+group: Terveys
+view: timeline
+id: datetime
+title: laji
+subtitle: [kesto, matka]
+date_field: aika
+sort: -aika
+
+fields:
+  - key: aika
+    type: datetime
+    label: Aika
+    required: true
+  - key: laji
+    type: select
+    label: Laji
+    required: true
+    options: [Juoksu, Kävely, Pyöräily, Kuntosali, Uinti, Jooga]
+  - key: kesto
+    type: number
+    label: Kesto
+    unit: min
+    min: 0
+  - key: matka
+    type: number
+    label: Matka
+    unit: km
+    min: 0
+  - key: rasitus
+    type: rating
+    label: Rasitus

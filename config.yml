@@ -1,0 +1,12 @@
+# Repon yleisasetukset. Sovellus lukee tämän ensimmäisenä.
+schema_version: 1
+name: UniGit
+
+# Kotinäkymän osiot tässä järjestyksessä. Kokoelma liitetään osioon
+# omassa _collection.yml-tiedostossaan (group: ...). Kokoelmat, joiden
+# osiota ei ole listattu, näytetään lopussa osiossa "Muut".
+groups:
+  - Elektroniikka
+  - Terveys
+  - Ruoka
+  - Elämä

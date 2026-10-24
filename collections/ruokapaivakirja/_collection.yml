@@ -1,0 +1,33 @@
+name: Ruokapäiväkirja
+icon: fork.knife
+color: yellow
+group: Ruoka
+view: timeline
+id: datetime
+title: ruoka
+subtitle: [ateria, kcal]
+date_field: aika
+sort: -aika
+
+fields:
+  - key: aika
+    type: datetime
+    label: Aika
+    required: true
+  - key: ateria
+    type: select
+    label: Ateria
+    options: [Aamiainen, Lounas, Päivällinen, Iltapala, Välipala]
+  - key: ruoka
+    type: text
+    label: Ruoka
+    required: true
+  - key: resepti
+    type: ref
+    to: reseptit
+    label: Resepti
+  - key: kcal
+    type: number
+    label: Energia
+    unit: kcal
+    min: 0

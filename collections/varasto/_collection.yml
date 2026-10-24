@@ -1,0 +1,65 @@
+name: Varasto
+icon: shippingbox
+color: orange
+group: Elektroniikka
+view: list
+id: slug
+title: nimi
+subtitle: [malli, sijainti]
+sort: nimi
+
+fields:
+  - key: nimi
+    type: text
+    label: Nimi
+    required: true
+  - key: malli
+    type: text
+    label: Malli
+  - key: kategoria
+    type: select
+    label: Kategoria
+    options: [Mikrokontrollerit, Tietokoneet, Radio ja IR, Anturit, Adapterit ja kaapelit, Liittimet, Muistikortit, Työkalut]
+  - key: maara
+    type: number
+    label: Määrä
+    integer: true
+    min: 0
+    stepper: true
+    default: 0
+    help: Fyysisesti olemassa
+  - key: varattu
+    type: number
+    label: Varattu
+    integer: true
+    min: 0
+    default: 0
+    help: Projektien käytössä
+  - key: tulossa
+    type: number
+    label: Tulossa
+    integer: true
+    min: 0
+    default: 0
+    help: Tilattu, ei vielä saapunut
+  - key: minimi
+    type: number
+    label: Hälytysraja
+    integer: true
+    min: 0
+    help: Ilmoita, kun vapaana on vähemmän
+  - key: projektit
+    type: ref
+    to: projektit
+    multiple: true
+    label: Projektit
+  - key: sijainti
+    type: select
+    label: Sijainti
+    options: [Laatikko A, Laatikko B, Hylly, Käytössä]
+  - key: kauppa
+    type: url
+    label: Tuotelinkki
+  - key: kuva
+    type: image
+    label: Kuva

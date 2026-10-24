@@ -1,0 +1,36 @@
+name: Projektit
+icon: hammer
+color: blue
+group: Elektroniikka
+view: board
+id: slug
+title: nimi
+subtitle: [seuraava]
+group_by: tila
+sort: -paivitetty
+
+fields:
+  - key: nimi
+    type: text
+    label: Nimi
+    required: true
+  - key: tila
+    type: select
+    label: Tila
+    required: true
+    options: [idea, suunnittelu, työn alla, tauolla, käytössä, valmis]
+    default: idea
+  - key: seuraava
+    type: text
+    label: Seuraava askel
+  - key: tagit
+    type: select
+    multiple: true
+    label: Tagit
+    options: [ESP32, RP2040, Home Assistant, BLE, LoRa, 3D-tulostus]
+  - key: paivitetty
+    type: date
+    label: Päivitetty
+  - key: repo
+    type: url
+    label: Koodi

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "collection.schema.json",
+  "title": "Kokoelman määrittely (_collection.yml)",
+  "type": "object",
+  "required": ["name", "view", "fields"],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "type": "string", "minLength": 1, "description": "Näyttönimi" },
+    "icon": { "type": "string", "description": "SF Symbol -nimi, esim. shippingbox, figure.run, fork.knife" },
+    "color": { "enum": ["red", "orange", "yellow", "green", "mint", "teal", "blue", "indigo", "purple", "pink", "brown", "gray"] },
+    "group": { "type": "string", "description": "Kotinäkymän osio, ks. config.yml" },
+    "view": {
+      "enum": ["list", "board", "timeline", "gallery"],
+      "description": "list = lista, board = sarakkeet valintakentän mukaan, timeline = päivämäärän mukaan, gallery = kortit kuvilla"
+    },
+    "id": {
+      "enum": ["slug", "datetime"],
+      "default": "slug",
+      "description": "Tiedostonimen muoto. slug: esp32-c3-mini.md, datetime: 2026-10-24-1830.md"
+    },
+    "title": { "type": "string", "description": "Kenttä, jota käytetään otsikkona" },
+    "subtitle": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 3,
+      "description": "Kentät, jotka näytetään otsikon alla"
+    },
+    "sort": { "type": "string", "description": "Lajittelukenttä; '-' alussa = laskeva" },
+    "group_by": { "type": "string", "description": "board-näkymän sarakkeet: select-kenttä" },
+    "date_field": { "type": "string", "description": "timeline-näkymän päivämääräkenttä" },
+    "image_field": { "type": "string", "description": "gallery-näkymän kuvakenttä" },
+    "body_label": { "type": "string", "description": "Vapaan tekstin otsikko, oletus 'Muistiinpanot'" },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/field" }
+    }
+  },
+  "$defs": {
+    "field": {
+      "type": "object",
+      "required": ["key", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "type": {
+          "enum": ["text", "number", "date", "datetime", "select", "boolean", "rating", "url", "ref", "image"]
+        },
+        "label": { "type": "string" },
+        "required": { "type": "boolean" },
+        "default": {},
+        "help": { "type": "string" },
+        "unit": { "type": "string", "description": "number: yksikkö, esim. kg, min, kcal" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "integer": { "type": "boolean", "description": "number: vain kokonaisluvut" },
+        "stepper": { "type": "boolean", "description": "number: +/- -napit (esim. varastosaldo)" },
+        "options": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "select: sallitut arvot"
+        },
+        "multiple": { "type": "boolean", "description": "select/ref: useita arvoja (lista)" },
+        "to": { "type": "string", "description": "ref: kohdekokoelman kansion nimi" }
+      }
+    }
+  }
+}

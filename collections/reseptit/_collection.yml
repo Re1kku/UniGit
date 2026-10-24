@@ -1,0 +1,41 @@
+name: Reseptit
+icon: book.closed
+color: red
+group: Ruoka
+view: gallery
+id: slug
+title: nimi
+subtitle: [aika, annokset]
+image_field: kuva
+sort: nimi
+body_label: Ainekset ja ohje
+
+fields:
+  - key: nimi
+    type: text
+    label: Nimi
+    required: true
+  - key: tyyppi
+    type: select
+    multiple: true
+    label: Tyyppi
+    options: [Pääruoka, Keitto, Salaatti, Leivonnainen, Jälkiruoka, Kasvis]
+  - key: annokset
+    type: number
+    label: Annokset
+    integer: true
+    min: 1
+  - key: aika
+    type: number
+    label: Valmistusaika
+    unit: min
+    min: 0
+  - key: arvio
+    type: rating
+    label: Arvio
+  - key: lahde
+    type: url
+    label: Lähde
+  - key: kuva
+    type: image
+    label: Kuva
