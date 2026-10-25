@@ -1,0 +1,72 @@
+# Esimerkkikokoelma. Nimeä kansio ja kentät uudelleen omaan käyttöösi,
+# poista turhat kentät tai kopioi valmis malli examples/-kansiosta.
+name: Kohteet
+icon: square.grid.2x2
+color: blue
+group: Osio 1
+view: list            # list | board | timeline | gallery
+id: slug              # slug: oma-kohde.md · datetime: 2026-10-25-1530.md
+title: nimi
+subtitle: [kategoria, alakategoria]
+sort: nimi
+
+fields:
+  - key: nimi
+    type: text
+    label: Nimi
+    required: true
+
+  - key: kategoria
+    type: select
+    label: Kategoria
+    options: [Kategoria A, Kategoria B]
+
+  # Alakategorian vaihtoehdot riippuvat valitusta kategoriasta.
+  - key: alakategoria
+    type: select
+    label: Alakategoria
+    parent: kategoria
+    options:
+      Kategoria A: [Alakategoria A1, Alakategoria A2]
+      Kategoria B: [Alakategoria B1, Alakategoria B2]
+
+  - key: tila
+    type: select
+    label: Tila
+    options: [aktiivinen, odottaa, valmis]
+    default: aktiivinen
+
+  - key: tagit
+    type: select
+    label: Tagit
+    multiple: true
+    options: [tagi 1, tagi 2, tagi 3]
+
+  - key: maara
+    type: number
+    label: Määrä
+    integer: true
+    min: 0
+    stepper: true
+
+  - key: paivamaara
+    type: date
+    label: Päivämäärä
+
+  - key: arvio
+    type: rating
+    label: Arvio
+
+  - key: linkki
+    type: url
+    label: Linkki
+
+  - key: liittyy
+    type: ref
+    to: kohteet
+    multiple: true
+    label: Liittyy
+
+  - key: kuva
+    type: image
+    label: Kuva

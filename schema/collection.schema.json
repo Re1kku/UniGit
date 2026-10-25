@@ -57,12 +57,27 @@
         "integer": { "type": "boolean", "description": "number: vain kokonaisluvut" },
         "stepper": { "type": "boolean", "description": "number: +/- -napit (esim. varastosaldo)" },
         "options": {
-          "type": "array",
-          "items": { "type": "string" },
-          "minItems": 1,
-          "uniqueItems": true,
-          "description": "select: sallitut arvot"
+          "description": "select: sallitut arvot. Kun parent on asetettu: vaihtoehdot ylätason arvon mukaan, esim. {Kategoria A: [A1, A2]}",
+          "oneOf": [
+            {
+              "type": "array",
+              "items": { "type": "string" },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          ]
         },
+        "parent": { "type": "string", "description": "select: ylätason select-kenttä, jonka arvo rajaa tämän kentän vaihtoehdot (esim. alakategoria → kategoria)" },
         "multiple": { "type": "boolean", "description": "select/ref: useita arvoja (lista)" },
         "to": { "type": "string", "description": "ref: kohdekokoelman kansion nimi" }
       }

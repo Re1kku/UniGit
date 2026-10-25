@@ -193,10 +193,35 @@ for d in col_dirs:
         t = f["type"]
         if t == "select" and "options" not in f:
             report("error", defn_path, f"Kenttä '{f['key']}': select tarvitsee options-listan")
+        if "parent" in f:
+            parent = fields.get(f["parent"])
+            if t != "select":
+                report("error", defn_path, f"Kenttä '{f['key']}': parent toimii vain select-kentässä")
+            elif parent is None or parent["type"] != "select":
+                report("error", defn_path, f"Kenttä '{f['key']}': parent '{f['parent']}' ei ole saman kokoelman select-kenttä")
+            elif parent.get("multiple"):
+                report("error", defn_path, f"Kenttä '{f['key']}': parent-kenttä '{f['parent']}' ei voi olla multiple")
+            elif not isinstance(f.get("options"), dict):
+                report("error", defn_path, f"Kenttä '{f['key']}': kun parent on asetettu, options kirjoitetaan muodossa "
+                                           f"{{Ylätason arvo: [vaihtoehto, ...]}}")
+            elif isinstance(parent.get("options"), list):
+                for k in f["options"]:
+                    if k not in parent["options"]:
+                        report("error", defn_path, f"Kenttä '{f['key']}': '{k}' ei ole kentän '{f['parent']}' vaihtoehto")
+        elif isinstance(f.get("options"), dict):
+            report("error", defn_path, f"Kenttä '{f['key']}': options-ryhmittely vaatii parent-kentän")
         if t == "ref" and "to" not in f:
             report("error", defn_path, f"Kenttä '{f['key']}': ref tarvitsee to-kohdekokoelman")
 
     collections[d.name] = {"dir": d, "path": defn_path, "defn": defn, "fields": fields, "ids": set()}
+
+# examples/-mallit: vain rakenteen tarkistus (niissä ei ole tietueita)
+ex_dir = ROOT / "examples"
+if ex_dir.is_dir():
+    for p in sorted(ex_dir.glob("*/_collection.yml")):
+        defn = load_yaml(p)
+        if defn is not None:
+            check_schema(col_validator, defn, p)
 
 # ref-kohteiden olemassaolo
 for name, c in collections.items():
@@ -218,7 +243,7 @@ for name, c in collections.items():
             continue
         rid = p.stem
         if not ID_PATTERNS[id_rule].match(rid):
-            example = "esp32-c3-mini.md" if id_rule == "slug" else "2026-10-24-1830.md"
+            example = "oma-kohde.md" if id_rule == "slug" else "2026-10-24-1830.md"
             report("error", p, f"Tiedostonimi ei vastaa muotoa '{id_rule}' (esim. {example})")
         c["ids"].add(rid)
         data = split_frontmatter(p)
@@ -226,7 +251,14 @@ for name, c in collections.items():
             records.append((name, p, data))
 
 
-def check_value(f: dict, v, path: Path) -> None:
+def allowed_options(f: dict, data: dict) -> list:
+    opts = f.get("options", [])
+    if isinstance(opts, dict):
+        return opts.get(data.get(f.get("parent")), [])
+    return opts
+
+
+def check_value(f: dict, v, path: Path, data: dict) -> None:
     key, t = f["key"], f["type"]
     pre = f"Kenttä '{key}'"
     if f.get("multiple"):
@@ -261,8 +293,12 @@ def check_value(f: dict, v, path: Path) -> None:
             if not is_datetime(x):
                 report("error", path, f"{pre}: odotettiin aikaa muodossa 2026-10-24T18:30")
         elif t == "select":
-            if x not in f.get("options", []):
-                report("error", path, f"{pre}: '{x}' ei ole sallittu. Sallitut: {', '.join(f.get('options', []))}. "
+            opts = allowed_options(f, data)
+            if "parent" in f and not data.get(f["parent"]):
+                report("error", path, f"{pre}: valitse ensin '{f['parent']}'")
+            elif x not in opts:
+                ctx = f" kun {f['parent']} = {data.get(f['parent'])}" if "parent" in f else ""
+                report("error", path, f"{pre}: '{x}' ei ole sallittu{ctx}. Sallitut: {', '.join(opts) or '(ei vaihtoehtoja)'}. "
                                       f"Lisää uusi vaihtoehto kokoelman _collection.yml-tiedostoon.")
         elif t == "boolean":
             if not isinstance(x, bool):
@@ -290,7 +326,7 @@ for name, p, data in records:
             if f.get("required"):
                 report("error", p, f"Pakollinen kenttä '{key}' puuttuu")
             continue
-        check_value(f, v, p)
+        check_value(f, v, p, data)
     for key in data:
         if key not in fields:
             report("warning", p, f"Kenttä '{key}' ei ole kokoelman määrittelyssä; sovellus näyttää sen kohdassa 'Muut tiedot'")
