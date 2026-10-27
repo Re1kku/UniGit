@@ -1,6 +1,6 @@
 # UniGit – tietopankkipohja
 
-Tämä repo on sinun tietopankkisi: varasto, projektit, treenit, reseptit, päiväkirja tai mitä ikinä haluat seurata. Data on tavallisina tekstitiedostoina sinun omassa GitHub-repossasi. Puhelinsovellus, Claude ja GitHubin verkkosivu muokkaavat kaikki samoja tiedostoja.
+Tämä repo on sinun tietopankkisi: varasto, projektit, treenit, reseptit, päiväkirja tai mitä ikinä haluat seurata. Data on tavallisina tekstitiedostoina sinun omassa GitHub-repossasi. Puhelinsovellus, Claude tai muu tekoäly ja GitHubin verkkosivu muokkaavat kaikki samoja tiedostoja.
 
 ## Käyttöönotto
 
@@ -24,7 +24,8 @@ examples/                      valmiita kokoelmamalleja kopioitavaksi
 attachments/                   kuvat ja liitteet
 schema/                        rakenteen tarkka määrittely (JSON Schema)
 .github/                       automaattinen tarkistus
-CLAUDE.md                      säännöt Claudelle
+AGENTS.md                      säännöt kaikille muokkaajille (tekoälyt, skriptit, ihmiset)
+CLAUDE.md                      viittaus AGENTS.md:hen Claude Codelle
 ```
 
 ## Tietue
